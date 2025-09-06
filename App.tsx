@@ -11,11 +11,11 @@ import {
 export default function App() {
   const [mode, setMode] = useState<"calc" | "currency">("calc");
 
-  // Calculator states
+  // Calc state
   const [display1, setDisplay1] = useState("");
   const [scientific1, setScientific1] = useState(false);
 
-  // Currency converter states
+  // Currency converter
   const [amount, setAmount] = useState("1"); // default to 1
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("INR");
@@ -28,7 +28,7 @@ export default function App() {
     "ZAR","AED","CHF","SEK","NZD"
   ];
 
-  // Fetch exchange rates
+  //exchange rates
   const fetchRates = async () => {
     try {
       const response = await fetch(
@@ -47,7 +47,7 @@ export default function App() {
     fetchRates();
   }, [fromCurrency, toCurrency]);
 
-  // Calculator logic
+  //Calc logic
   const handlePress = (value: string) => {
     if (value === "AC") {
       setDisplay1("");
@@ -68,7 +68,7 @@ export default function App() {
     }
   };
 
-  // Currency keypad logic
+  // Curren keypad
   const handleCurrencyKey = (value: string) => {
     if (value === "AC") {
       setAmount("1"); // reset to 1 instead of 0
@@ -79,19 +79,19 @@ export default function App() {
     }
   };
 
-  // Currency select
+  // Curren select
   const handleCurrencySelect = (currency: string) => {
     if (selecting === "from") {
       setFromCurrency(currency);
     } else {
       setToCurrency(currency);
     }
-    // always reset to 1 when switching currencies
+    // reset to 1
     setAmount("1");
     setModalVisible(false);
   };
 
-  // Calculator buttons
+  // buttons
   const normalButtons = [
     ["AC", "⌫", "%", "÷"],
     ["7", "8", "9", "×"],
@@ -120,7 +120,7 @@ export default function App() {
 
   const buttons = scientific1 ? sciButtons : normalButtons;
 
-  // Conversion result
+  // Conversion
   const getConvertedValue = () => {
     if (!rate) return "Loading...";
     if (fromCurrency === toCurrency) return amount; // same currency
@@ -129,7 +129,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {/* Mode Switch */}
+      {/* Mode */}
       <View style={styles.topBar}>
         <TouchableOpacity
           style={styles.toggleButton}
@@ -147,7 +147,6 @@ export default function App() {
 
       {mode === "calc" ? (
         <>
-          {/* Scientific toggle (smaller + aligned right) */}
           <TouchableOpacity
             style={styles.scientificToggle}
             onPress={() => setScientific1(!scientific1)}
@@ -156,11 +155,8 @@ export default function App() {
               {scientific1 ? "Normal" : "Sci"}
             </Text>
           </TouchableOpacity>
-
-          {/* Calculator display */}
           <Text style={styles.display}>{display1}</Text>
 
-          {/* Calculator buttons */}
           <View style={styles.buttons}>
             {buttons.map((row, rowIndex) => (
               <View key={rowIndex} style={styles.row}>
@@ -208,7 +204,7 @@ export default function App() {
             </TouchableOpacity>
           </View>
 
-          {/* Numeric Keypad */}
+          {/*Keypad */}
           <View style={styles.buttons}>
             {currencyButtons.map((row, rowIndex) => (
               <View key={rowIndex} style={styles.row}>
@@ -225,7 +221,7 @@ export default function App() {
             ))}
           </View>
 
-          {/* Currency Selection Modal */}
+          {/*Selection*/}
           <Modal
             visible={modalVisible}
             animationType="slide"
@@ -269,7 +265,6 @@ const styles = StyleSheet.create({
   },
   toggleText: { color: "white", fontSize: 16 },
 
-  // NEW Scientific toggle style
   scientificToggle: {
     alignSelf: "flex-end",
     backgroundColor: "#555",
